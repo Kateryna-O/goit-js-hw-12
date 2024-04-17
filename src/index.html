@@ -8,17 +8,25 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
-    <load ="partials/header.html" />
-
-    <section>
-      <h1>Example page title</h1>
-      <!-- Path to images as from index.html file -->
-      <img src="./img/javascript.svg" alt="" />
-    </section>
-
-    <!-- Loads the specified .html file -->
-    <load ="partials/vite-promo.html" />
-
+    <div class="container">
+      <form class="search-form" autocomplete="off">
+        <input
+          type="search"
+          name="search"
+          id="input-text"
+          placeholder="Search here..."
+          autofocus
+        />
+        <button type="submit" class="button">Search</button>
+      </form>
+      <div class="loader-wrapper is-hidden">
+        <div class="loader"></div>
+      </div>
+      <ul class="gallery"></ul>
+      <div class="button-container">
+        <button type="button" class="btn-more is-hidden">Load more</button>
+      </div>
+    </div>
     <script type="module" src="./main.js"></script>
   </body>
 </html>

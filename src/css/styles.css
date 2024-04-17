@@ -4,22 +4,186 @@
   | default @import url()
   |============================
 */
-@import url('./reset.css');
-@import url('./vite-promo.css');
-@import url('./header.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: lightgray;
+  background-color: #a3d3d3bc;
+}
+a {
+  text-decoration: none;
+}
 
-  color: #242424;
-  background-color: rgba(255, 255, 255, 0.87);
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.search-form {
+  width: 500px;
+  height: 40px;
+  margin: 30px auto;
+  border-radius: 4px;
+  border: 1px solid #a7a8a8;
+  background-color: rgba(68, 68, 68, 0.853);
+  display: flex;
+}
+
+input,
+button {
+  font-family: 'Montserrat', sans-serif;
+  border: none;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  color: #ccc;
+  background-color: transparent;
+  border-radius: 4px 0 0 4px;
+}
+
+input::placeholder {
+  color: rgb(234, 244, 245);
+}
+
+input:focus {
+  outline: none;
+}
+
+.button {
+  cursor: pointer;
+  height: 100%;
+  width: 120px;
+  color: #ccc;
+  background-color: transparent;
+  border-left: 1px solid #a7a8a8;
+  border-radius: 0 4px 4px 0;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  background-color: #fff;
+  color: #444;
+}
+
+button:active {
+  box-shadow: 0px 0px 12px 0px rgba(225, 225, 225, 1);
+}
+
+button:focus {
+  outline: none;
+}
+
+.gallery {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.gallery-item {
+  width: 250px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-link {
+  display: block;
+}
+
+.gallery-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.gallery-text {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  column-count: 2;
+}
+
+.gallery-text li {
+  margin-bottom: 5px;
+}
+
+.gallery-text span {
+  display: block;
+}
+
+.gallery-text p {
+  margin: 0;
+}
+.loader-wrapper {
+  margin: 0 auto;
+  max-width: 1440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-wrapper.is-hidden {
+  display: none;
+}
+.loader {
+  width: 48px;
+  height: 48px;
+  background: #fff;
+  border-radius: 50%;
+  position: relative;
+  animation: skLinRotate 1s ease-in-out infinite alternate;
+}
+.loader:after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 5px solid transparent;
+  border-top-color: #ff3d00;
+}
+@keyframes skLinRotate {
+  95%,
+  100% {
+    transform: rotate(840deg);
+  }
+}
+
+.btn-more {
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  height: 100%;
+  width: 120px;
+  color: #ccc;
+  background-color: #444;
+  border: 1px solid #444;
+  border-radius: 4px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-more.is-hidden {
+  display: none;
 }
