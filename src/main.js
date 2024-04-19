@@ -1,22 +1,18 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-import axios from 'axios';
 
 import { renderGalleryImg } from './js/render-functions.js';
+import { searchImages } from './js/pixabay-api.js';
 
 const form = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery');
 const loaderWrapperEl = document.querySelector('.loader-wrapper');
 const btnLoadMore = document.querySelector('.btn-more');
 
-const apiKey = '43344529-efab811219d9ae176ef45ef76';
-const baseUrl = 'https://pixabay.com/api/';
 let page = 1;
 let perPage = 15;
-let currentSearchQuery = null;
 let totalContent = null;
 let totalContentPages = null;
-let allImages = [];
 
 btnLoadMore.addEventListener('click', onLoadMore);
 form.addEventListener('submit', onSubmitForm);
@@ -25,25 +21,18 @@ async function onSubmitForm(event) {
   event.preventDefault();
   gallery.innerHTML = '';
   loaderWrapperEl.classList.remove('is-hidden');
-
   page = 1;
-  perPage = 15;
-  const inputValue = document.getElementById('input-text').value.trim();
-  currentSearchQuery = inputValue;
+  const currentSearchQuery = document.getElementById('input-text').value.trim();
 
-  if (inputValue !== '') {
+  if (currentSearchQuery !== '') {
     try {
-      const response = await axios.get(
-        `${baseUrl}?key=${apiKey}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`
-      );
-      const data = response.data;
-      const images = data.hits;
-      totalContent = data.totalHits;
+      const response = await searchImages(currentSearchQuery, page);
+      const images = response.hits;
+      totalContent = response.totalHits;
       totalContentPages = Math.ceil(totalContent / perPage);
 
       if (images.length > 0) {
-        allImages = images;
-        renderGalleryImg(gallery, allImages);
+        renderGalleryImg(gallery, images);
         btnLoadMore.classList.remove('is-hidden');
       } else {
         iziToast.info({
@@ -74,18 +63,15 @@ async function onSubmitForm(event) {
 }
 
 async function onLoadMore(event) {
+  const currentSearchQuery = document.getElementById('input-text').value.trim();
   page += 1;
-
   if (page <= totalContentPages) {
     loaderWrapperEl.classList.remove('is-hidden');
     try {
-      const response = await axios.get(
-        `${baseUrl}?key=${apiKey}&q=${currentSearchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`
-      );
-      const images = response.data.hits;
-      if (images.length > 0) {
-        allImages = [...allImages, ...images];
-        renderGalleryImg(gallery, allImages);
+      const response = await searchImages(currentSearchQuery, page);
+      if (response && response.hits && response.hits.length > 0) {
+        const images = response.hits;
+        renderGalleryImg(gallery, images);
         smoothScrollToGallery();
       } else {
         iziToast.info({
