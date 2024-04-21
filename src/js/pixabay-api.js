@@ -8,7 +8,7 @@ async function searchImages(query, page) {
   const url = `${baseUrl}?key=${apiKey}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
   try {
     const response = await axios.get(url);
-    return response.data.hits;
+    return response.data;
   } catch (error) {
     console.error('Error searching images:', error);
     throw new Error('Error searching images');

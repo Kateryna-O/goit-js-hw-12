@@ -21,81 +21,81 @@ async function onSubmitForm(event) {
   event.preventDefault();
   gallery.innerHTML = '';
   loaderWrapperEl.classList.remove('is-hidden');
+  btnLoadMore.classList.add('is-hidden');
   page = 1;
   const currentSearchQuery = document.getElementById('input-text').value.trim();
 
-  if (currentSearchQuery !== '') {
-    try {
-      const response = await searchImages(currentSearchQuery, page);
-      const images = response.hits;
-      totalContent = response.totalHits;
-      totalContentPages = Math.ceil(totalContent / perPage);
-
-      if (images.length > 0) {
-        renderGalleryImg(gallery, images);
-        btnLoadMore.classList.remove('is-hidden');
-      } else {
-        iziToast.info({
-          title: 'Info',
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
-        });
-        btnLoadMore.classList.add('is-hidden');
-      }
-    } catch (error) {
-      console.error('Error searching images:', error);
-      iziToast.error({
-        title: 'Error',
-        message:
-          'An error occurred while searching for images. Please try again later.',
-      });
-    } finally {
-      loaderWrapperEl.classList.add('is-hidden');
-    }
-  } else {
+  if (currentSearchQuery === '') {
     iziToast.error({
       title: 'Error',
       message: 'Please enter a search term',
     });
     loaderWrapperEl.classList.add('is-hidden');
     btnLoadMore.classList.add('is-hidden');
+    return;
+  }
+  try {
+    const response = await searchImages(currentSearchQuery, page);
+    const images = response.hits;
+    totalContent = response.totalHits;
+    totalContentPages = Math.ceil(totalContent / perPage);
+
+    if (images.length > 0) {
+      renderGalleryImg(gallery, images);
+      btnLoadMore.classList.remove('is-hidden');
+    } else {
+      iziToast.info({
+        title: 'Info',
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+      });
+      btnLoadMore.classList.add('is-hidden');
+    }
+  } catch (error) {
+    console.error('Error searching images:', error);
+    iziToast.error({
+      title: 'Error',
+      message:
+        'An error occurred while searching for images. Please try again later.',
+    });
+  } finally {
+    loaderWrapperEl.classList.add('is-hidden');
   }
 }
 
 async function onLoadMore(event) {
   const currentSearchQuery = document.getElementById('input-text').value.trim();
   page += 1;
-  if (page <= totalContentPages) {
-    loaderWrapperEl.classList.remove('is-hidden');
-    try {
-      const response = await searchImages(currentSearchQuery, page);
-      if (response && response.hits && response.hits.length > 0) {
-        const images = response.hits;
-        renderGalleryImg(gallery, images);
-        smoothScrollToGallery();
-      } else {
+  loaderWrapperEl.classList.remove('is-hidden');
+  try {
+    const response = await searchImages(currentSearchQuery, page);
+    if (response && response.hits && response.hits.length > 0) {
+      const images = response.hits;
+      renderGalleryImg(gallery, images);
+      smoothScrollToGallery();
+      if (page === totalContentPages) {
+        btnLoadMore.classList.add('is-hidden');
         iziToast.info({
           title: 'Info',
-          message: 'No more images available for this search term.',
+          message: "We're sorry, but you've reached the end of search results.",
         });
-        btnLoadMore.classList.add('is-hidden');
       }
-    } catch (error) {
-      console.error('Error loading more images:', error);
-      iziToast.error({
-        title: 'Error',
-        message:
-          'An error occurred while loading more images. Please try again later.',
+    } else {
+      iziToast.info({
+        title: 'Info',
+        message: 'No more images available for this search term.',
       });
-    } finally {
-      loaderWrapperEl.classList.add('is-hidden');
+      btnLoadMore.classList.add('is-hidden');
     }
-  } else {
-    iziToast.info({
-      title: 'Info',
-      message: "We're sorry, but you've reached the end of search results.",
+  } catch (error) {
+    console.error('Error loading more images:', error);
+    iziToast.error({
+      title: 'Error',
+      message:
+        'An error occurred while loading more images. Please try again later.',
     });
-    btnLoadMore.classList.add('is-hidden');
+  } finally {
+    loaderWrapperEl.classList.add('is-hidden');
   }
 }
 
